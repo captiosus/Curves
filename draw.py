@@ -2,6 +2,14 @@ from display import *
 from matrix import *
 import math
 
+# bezier
+# 250 50 200 250 200 250 312 440
+# bezier
+# 88 367 200 250 200 250 250 50
+# bezier
+# 312 440 200 250 200 250 88 132
+# bezier
+# 188 440 200 250 200 250 88 132
 def add_circle( points, cx, cy, cz, r, step ):
     x = 0
     while x < 1.001:
