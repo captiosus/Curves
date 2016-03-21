@@ -12,12 +12,11 @@ def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
     if curve_type == "hermite":
         x_coef = generate_curve_coefs(x0, x2, x1, x3, "hermite")
         y_coef = generate_curve_coefs(y0, y2, y1, y3, "hermite")
-        print_matrix(x_coef)
     elif curve_type == "bezier":
-        x_coef = generate_curve_coefs(x0, x3, x1, x2, "bezier")
-        y_coef = generate_curve_coefs(y0, y3, y1, y2, "bezier")
+        x_coef = generate_curve_coefs(x0, x1, x2, x3, "bezier")
+        y_coef = generate_curve_coefs(y0, y1, y2, y3, "bezier")
     x = 0
-    while x < 1.0001:
+    while x < 1:
         x_val_0 = point_calc(x_coef, x)
         y_val_0 = point_calc(y_coef, x)
         x += step

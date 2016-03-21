@@ -21,12 +21,12 @@ def parse_file( fname, points, transform, screen, color ):
         elif data[x] == "hermite":
             params = data[x+1].split(" ")
             params = [int(i) for i in params]
-            add_curve(points, params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7], 0.0001, "hermite")
+            add_curve(points, params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7], 0.001, "hermite")
             x+=1
         elif data[x] == "bezier":
             params = data[x+1].split(" ")
             params = [int(i) for i in params]
-            add_curve(points, params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7], 0.0001, "bezier")
+            add_curve(points, params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7], 0.001, "bezier")
             x+=1
         elif data[x] == "ident":
             ident(transform)
@@ -43,23 +43,25 @@ def parse_file( fname, points, transform, screen, color ):
             matrix_mult(s, transform)
             x+=1
         elif data[x] == "xrotate":
-            s = make_rotX(float(data[x+1]))
+            s = make_rotX(int(data[x+1]))
             matrix_mult(s, transform)
             x+=1
         elif data[x] == "yrotate":
-            s = make_rotY(float(data[x+1]))
+            s = make_rotY(int(data[x+1]))
             matrix_mult(s, transform)
             x+=1
         elif data[x] == "zrotate":
-            s = make_rotZ(float(data[x+1]))
+            s = make_rotZ(int(data[x+1]))
             matrix_mult(s, transform)
             x+=1
         elif data[x] == "apply":
             matrix_mult(transform, points)
         elif data[x] == "display":
+            clear_screen(screen)
             draw_lines(points, screen, color)
             display(screen)
         elif data[x] == "save":
+            clear_screen(screen)
             draw_lines(points, screen, color)
             save_extension(screen, data[x+1])
             x+=1
