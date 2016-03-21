@@ -1,13 +1,52 @@
 import math
 
 def make_bezier():
-    pass
+    b = new_matrix()
+    b[0][0] = -1
+    b[0][1] = 3
+    b[0][2] = -3
+    b[0][3] = 1
+    b[1][0] = 3
+    b[1][1] = -6
+    b[1][2] = 3
+    b[2][0] = -3
+    b[2][1] = 3
+    b[3][0] = 1
+    return b
 
 def make_hermite():
-    pass
+    b = new_matrix()
+    b[0][0] = 2
+    b[0][1] = -3
+    b[0][3] = 1
+    b[1][0] = -3
+    b[1][1] = 3
+    b[2][0] = 1
+    b[2][1] = -2
+    b[2][2] = 1
+    b[3][0] = 1
+    b[3][1] = -1
+    return b
 
 def generate_curve_coefs( p1, p2, p3, p4, t ):
-    pass
+    if t == "hermite":
+        hermite_matrix = make_hermite()
+        c = new_matrix(4, 1)
+        c[0][0] = p1
+        c[0][1] = p2
+        c[0][2] = p3
+        c[0][3] = p4
+        matrix_mult(hermite_matrix, c)
+        return c
+    elif t == "bezier":
+        bezier_matrix = make_bezier()
+        c = new_matrix(4, 1)
+        c[0][0] = p1
+        c[0][1] = p2
+        c[0][2] = p3
+        c[0][3] = p4
+        matrix_mult(bezier_matrix, c)
+        return c
 
 def make_translate( x, y, z ):
     t = new_matrix()
@@ -24,8 +63,8 @@ def make_scale( x, y, z ):
     s[1][1] = y
     s[2][2] = z
     return s
-    
-def make_rotX( theta ):    
+
+def make_rotX( theta ):
     rx = new_matrix()
     ident( rx )
     rx[1][1] = math.cos( theta )
@@ -83,15 +122,13 @@ def scalar_mult( matrix, x ):
 
 #m1 * m2 -> m2
 def matrix_mult( m1, m2 ):
-    
+
     t = new_matrix( 4, 1 )
 
-    for c in range( len( m2 ) ):        
-        
+    for c in range( len( m2 ) ):
+
         for r in range(4):
             t[0][r] = m2[c][r]
-            
+
         for r in range(4):
             m2[c][r] = m1[0][r] * t[0][0] + m1[1][r] * t[0][1] + m1[2][r] * t[0][2] + m1[3][r] * t[0][3]
-
-

@@ -3,15 +3,35 @@ from matrix import *
 import math
 
 def add_circle( points, cx, cy, cz, r, step ):
-    pass
+    x = 0
+    while x < 1.001:
+        add_edge(points, r*math.cos(2*x*math.pi) + cx, r*math.sin(2*x*math.pi) + cy, cz, r*math.cos((x + step)*math.pi*2) + cx, r*math.sin((x + step)*math.pi*2) + cy, cz)
+        x += step
 
 def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
-    pass
+    if curve_type == "hermite":
+        x_coef = generate_curve_coefs(x0, x2, x1, x3, "hermite")
+        y_coef = generate_curve_coefs(y0, y2, y1, y3, "hermite")
+        print_matrix(x_coef)
+    elif curve_type == "bezier":
+        x_coef = generate_curve_coefs(x0, x3, x1, x2, "bezier")
+        y_coef = generate_curve_coefs(y0, y3, y1, y2, "bezier")
+    x = 0
+    while x < 1.0001:
+        x_val_0 = point_calc(x_coef, x)
+        y_val_0 = point_calc(y_coef, x)
+        x += step
+        x_val_1 = point_calc(x_coef, x)
+        y_val_1 = point_calc(y_coef, x)
+        add_edge(points, x_val_0, y_val_0, 0, x_val_1, y_val_1, 0)
+
+def point_calc( coefficients, step ):
+    return pow(step, 3) * coefficients[0][0] + pow(step, 2) * coefficients[0][1] + step * coefficients[0][2] + coefficients[0][3]
 
 def draw_lines( matrix, screen, color ):
     if len( matrix ) < 2:
         print "Need at least 2 points to draw a line"
-        
+
     p = 0
     while p < len( matrix ) - 1:
         draw_line( screen, matrix[p][0], matrix[p][1],
@@ -38,7 +58,7 @@ def draw_line( screen, x0, y0, x1, y1, color ):
         tmp = y0
         y0 = y1
         y1 = tmp
-    
+
     if dx == 0:
         y = y0
         while y <= y1:
@@ -93,4 +113,3 @@ def draw_line( screen, x0, y0, x1, y1, color ):
                 d = d - dy
             y = y + 1
             d = d + dx
-
